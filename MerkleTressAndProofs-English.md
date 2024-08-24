@@ -52,3 +52,5 @@ graph TD;
     class NodoA,NodoB,Dato2 proofNode;
 ```
 The proof consists of the sequence of nodes that connect the root node to the node containing the data ``"Dato2"``. You can verify the proof by calculating the summary (hash) of each node and comparing it with the summary stored in the previous node.
+
+In a nutshell, a ``Merkle Tree`` is a cryptography data structure using hashes, and ``Merkle Proofs`` are just a way of proving that some data is in fact in the tree, and they are often used in Airdrops and also veryfing state changes in ``Smart contracts`` and in ``Rollups``.
