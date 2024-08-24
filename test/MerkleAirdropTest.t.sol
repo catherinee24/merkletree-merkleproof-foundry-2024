@@ -1,16 +1,26 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.24;
 
-import {Test} from "forge-std/Test.sol";
+import {Test, console} from "forge-std/Test.sol";
 import {MerkleAirdrop} from "../src/MerkleAirdrop.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {Cookie} from "../src/Cookie.sol";
+//import {MakeMerkle} from "../src/MakeMerkle.sol";
 
 contract MerkleAdropTest is Test {
-    MerkleAidrop merkleAirdrop;
+    MerkleAidrop public merkleAirdrop;
+    Cookie public cookieToken;
 
-    bytes32 merkleRoot;
-    IERC20 airdropToken;
+    bytes32 public ROOT = 0xaa5d581231e596618465a56aa0f5870ba6e20785fe436d5bfb82b08662ccc7c4;
+    address user;
+    uint256 userPrivateKey;
     function setUp() public {
-        merkleAirdrop = new MerkleAirdrop(merkleRoot, IERC20(airdropToken));
+        cookieToken = new Cookie();
+        merkleAirdrop = new MerkleAirdrop(merkleRoot, cookieToken);
+
+        (user, userPrivateKey)= makeAddrAndKey("user");
+    }
+
+    function testUsersCanClaim() public {
+        console.log("User address: ", user);
     }
 }
