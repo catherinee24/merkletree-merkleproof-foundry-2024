@@ -12,7 +12,8 @@ Parts of the Data:
 0x01: A version number that tells us which version of the standard is being used.
 Domain Separator: Additional information that helps specify the context or domain for the data being signed.
 hashStruct(message): The hashed version of the structured message you want to sign.
-In simple terms, EIP-712 makes it easier to handle and verify structured messages by defining a clear format for signing them.
+
+# In simple terms, EIP-712 makes it easier to handle and verify structured messages by defining a clear format for signing them..
 
 
 
