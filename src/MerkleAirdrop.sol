@@ -11,7 +11,8 @@ import { MerkleProof } from "@openzeppelin/contracts/utils/cryptography/MerklePr
  * Original Work by:
  * @author Ciara Nightingale
  * @author Cyfrin
- * @notice this contract implements an ERC20 token airdrop using a Merkle tree to verify the validity of claims.
+ * @notice this contract implements an ERC20 token airdrop using a Merkle tree data structure to verify the validity of
+ * claims.
  * @dev The claim function is the main function of the contract and is used to claim tokens and verify the validity of
  * the claim.
  */
@@ -54,6 +55,7 @@ contract MerkleAirdrop {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
     /// @notice Allows a user to claim a specific amount of tokens from an airdrop
+    /// @notice Follows: CEI pattern
     /// @dev The function checks that the user has not claimed before and that the Merkle proof is valid
     /// @param claimerAccount The address of the user claiming the tokens
     /// @param amountToClaim The amount of tokens to claim
@@ -63,6 +65,7 @@ contract MerkleAirdrop {
             revert MerkleAirdrop__AlreadyClaimed();
         }
 
+        //leaf: Hash of (claimerAccount, amountToClaim) hashed twice to prevent preimage attack hash collision
         bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(claimerAccount, amountToClaim))));
 
         if (!MerkleProof.verify(merkleProof, i_merkleRoot, leaf)) {
