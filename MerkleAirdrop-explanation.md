@@ -119,7 +119,7 @@ The code can be broken down into three steps:
 
 ## Why is the hash function applied twice?
 
-The reason the hash function is applied twice is to prevent collisions. A collision occurs when two different inputs produce the same hash. By applying the hash function twice, the probability of a collision is reduced.
+The reason the hash function is applied twice is to prevent collisions. A collision occurs when two different inputs produce the same hash. By applying the hash function twice, the probability of a collision is reduced..
 
 In particular, this technique is known as a ``"second preimage attack``". Although the name may be misleading, what's being done is to prevent an attacker from finding a second input that produces the same hash as the original input.
 
