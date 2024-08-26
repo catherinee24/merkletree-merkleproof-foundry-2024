@@ -3,7 +3,7 @@
 
 - This means:
 * **Pre-signed Messages**: For example, Bob can sign a message in advance.
-* **Sponsored Transactions**: Alice can then use Bob's signed message to send a transaction and cover Bob’s gas fees.
+* **Sponsored Transactions**: Alice can then use Bob's signed message to send a transaction and cover Bob’s gas fees..
 
 > In short, EIP 191 allows one person to sign something 🖊️ and another person to handle the transaction and pay the costs.
 
