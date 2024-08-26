@@ -75,6 +75,12 @@ Steps for EIP 712 implementation:
 4. Combine all elements with a prefix and version byte to form a final digest.
 5. Use `ecrecover` with the digest and signature to retrieve the signer's address and verify authenticity.
 
+#### DIGEST MEANING
+ENGLISH = A "digest" is just the data you get after running a piece of information through a hash function. It's like a unique fingerprint for that data, created by the hash.
+
+ESPAÑOL = Un "digest" es simplemente el dato que obtienes después de pasar una información a través de una función hash. Es como una huella digital única para esa información, creada por el hash.
+>It is just any data resulting after a hash.
+
 ```js
 contract SignatureVerifier {
 
