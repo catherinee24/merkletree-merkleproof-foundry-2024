@@ -1,4 +1,4 @@
-# Introduction
+# What are signatures in blockchain
 
 In this lesson, we will learn about two important Ethereum signature standards: *EIP 191* and *EIP 712*. These standards help us **understand and verify digital signatures** better.
 
