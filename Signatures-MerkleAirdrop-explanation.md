@@ -1,4 +1,4 @@
-# Here's a simpler explanation of how signatures work in the MerkleAirdrop contract:
+# 📝 Here's a simpler explanation of how signatures work in the MerkleAirdrop contract:
 ```mermaid
 graph TD
     %% Definición de los nodos principales
