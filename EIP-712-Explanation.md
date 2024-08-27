@@ -73,7 +73,7 @@ Steps for EIP 712 implementation:
 2. Hash the struct and its type hash to create the domain separator.
 3. Create a message type hash and combine it with the message data to generate a hashed message.
 4. Combine all elements with a prefix and version byte to form a final digest.
-5. Use `ecrecover` with the digest and signature to retrieve the signer's address and verify authenticity.
+5. Use -> `ecrecover` with the digest and signature to retrieve the signer's address and verify authenticity.
 
 #### DIGEST MEANING
 ENGLISH = A "digest" is just the data you get after running a piece of information through a hash function. It's like a unique fingerprint for that data, created by the hash.
