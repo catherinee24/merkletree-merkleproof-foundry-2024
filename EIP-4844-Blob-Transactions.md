@@ -1,4 +1,4 @@
-# EIP 4844 Blob Transactions
+# EIP 4844 Blob (Binary Large Objects) Transactions
 **Introduction**
 In a regular Ethereum transaction, data is saved and stays on the blockchain forever. Blob transactions (type 3) are different because they allow data to be stored temporarily, for a period between 20 to 90 days, before being deleted.
 
@@ -21,6 +21,7 @@ To validate blobs, Ethereum uses a few specific processes and tools:
 
 >✨ Blobs are large pieces of temporary data attached to transactions, used by roll-ups like ZK Sync to bundle and send compressed transactions to Ethereum.
 >✨ In essence <br> This method allows the network to validate data efficiently while keeping storage requirements minimal.
+> ✨ Blobs were added because rollups wanted a cheaper way to validate transactions.
 
 ### Resources
 
