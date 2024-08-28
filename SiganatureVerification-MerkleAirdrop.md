@@ -16,7 +16,7 @@ function claim(
 - **Step 2**: Checking if the Signature is Valid
 Next, we need to verify whether the signature is valid:
 ```solidity
-if (signature is invalid) {
+if (!signature is invalid) {
     revert MerkleAirdrop__InvalidSignature();
 }
 ```
