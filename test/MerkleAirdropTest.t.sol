@@ -26,6 +26,7 @@ contract MerkleAdropTest is ZkSyncChainChecker, Test {
     bytes32 public MERKLE_PROOFTwo = 0xe5ebd1e1b5a5478a944ecab36a9a954ac3b6b8216875f6524caa7a1d87096576;
     bytes32[] public MERKLE_PROOF = [MERKLE_PROOFOne, MERKLE_PROOFTwo];
 
+    address public gasPayer;
     address user;
     uint256 userPrivateKey;
 
@@ -47,14 +48,18 @@ contract MerkleAdropTest is ZkSyncChainChecker, Test {
 
         //Creamos el account del usuario y la private key
         (user, userPrivateKey) = makeAddrAndKey("user");
+        gasPayer = makeAddr("gasPayer");
     }
     /*/////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                 MODIFIERS TEST
     /////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
     modifier userClaim() {
-        vm.startPrank(user);
-        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF);
+        bytes32 message = merkleAirdrop.getMessage(user, AMOUNT_TO_CLAIM);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, message);
+    
+        vm.startPrank(gasPayer);
+        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF, v, r, s);
         vm.stopPrank();
         _;
     }
@@ -69,9 +74,14 @@ contract MerkleAdropTest is ZkSyncChainChecker, Test {
         uint256 balanceOfUserBeforeClaim = cookieToken.balanceOf(user);
         console.log("Balance before claim: ", balanceOfUserBeforeClaim);
 
-        vm.startPrank(user);
-        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF);
-        vm.stopPrank();
+        //Obtenemos el mensaje que vamos a firmar 
+        bytes32 message = merkleAirdrop.getMessage(user, AMOUNT_TO_CLAIM);
+        // User sign the message
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, message);
+
+        //gasPayer call claim using the signed message to send the transaccion for them and pay the gas.
+        vm.prank(gasPayer);
+        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF, v, r, s);
 
         uint256 balanceOfUserAfterClaim = cookieToken.balanceOf(user);
         console.log("Balance after claim: ", balanceOfUserAfterClaim);
@@ -79,9 +89,12 @@ contract MerkleAdropTest is ZkSyncChainChecker, Test {
     }
 
     function testUserAlreadyClaimed() public userClaim {
-        vm.startPrank(user);
+        bytes32 message = merkleAirdrop.getMessage(user, AMOUNT_TO_CLAIM);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, message);
+        
+        vm.startPrank(gasPayer);            
         vm.expectRevert(MerkleAirdrop.MerkleAirdrop__AlreadyClaimed.selector);
-        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF);
+        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF, v, r, s);
         vm.stopPrank();
     }
 
@@ -95,9 +108,12 @@ contract MerkleAdropTest is ZkSyncChainChecker, Test {
         proof[0] = proofOne;
         proof[1] = proofTwo;
 
-        vm.startPrank(user);
+        bytes32 message = merkleAirdrop.getMessage(user, AMOUNT_TO_CLAIM);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, message);
+
+        vm.startPrank(gasPayer);
         vm.expectRevert(MerkleAirdrop.MerkleAidrop__InvalidProof.selector);
-        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, proof);
+        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, proof, v, r, s);
         vm.stopPrank();
     }
 
@@ -108,15 +124,16 @@ contract MerkleAdropTest is ZkSyncChainChecker, Test {
         vm.expectEmit(true, true, false, false, address(merkleAirdrop));
         emit Claimed(user, AMOUNT_TO_CLAIM);
 
-        vm.startPrank(user);
-        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF);
-        vm.stopPrank();
+        bytes32 message = merkleAirdrop.getMessage(user, AMOUNT_TO_CLAIM);
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, message);
+        vm.prank(gasPayer);
+        merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF, v, r, s);
     }
 
     /*/////////////////////////////////////////////////////////////////////////////////////////////////////////
                                             GETTER FUNCTION TEST
     /////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-    function testGetMerkleRoot() public {
+    function testGetMerkleRoot() public view {
         bytes32 merkleRoot = merkleAirdrop.getMerkleRoot();
         assertEq(merkleRoot, MERKLE_ROOT);
     }

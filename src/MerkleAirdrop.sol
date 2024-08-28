@@ -107,7 +107,7 @@ contract MerkleAirdrop is EIP712 {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
     function _isValidSignature(
-        address claimerAtryRecoverccount,
+        address claimerAccount,
         bytes32 digest,
         uint8 v,
         bytes32 r,
@@ -125,7 +125,7 @@ contract MerkleAirdrop is EIP712 {
                                      PUBLIC & EXTERNAL VIEW PURE FUNCTIONS
     /////////////////////////////////////////////////////////////////////////////////////////////////////////*/
     function getMessage(address claimerAccount, uint256 amountToClaim) public view returns (bytes32) {
-        return _hashTypeData4(
+        return _hashTypedDataV4(
             keccak256(
                 abi.encode(
                     MESSAGE_TYPEHASH, AirdropClaim({ claimerAccount: claimerAccount, amountToClaim: amountToClaim })
