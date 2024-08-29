@@ -57,7 +57,7 @@ contract MerkleAdropTest is ZkSyncChainChecker, Test {
     modifier userClaim() {
         bytes32 message = merkleAirdrop.getMessage(user, AMOUNT_TO_CLAIM);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, message);
-    
+
         vm.startPrank(gasPayer);
         merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF, v, r, s);
         vm.stopPrank();
@@ -74,7 +74,7 @@ contract MerkleAdropTest is ZkSyncChainChecker, Test {
         uint256 balanceOfUserBeforeClaim = cookieToken.balanceOf(user);
         console.log("Balance before claim: ", balanceOfUserBeforeClaim);
 
-        //Obtenemos el mensaje que vamos a firmar 
+        //Obtenemos el mensaje que vamos a firmar
         bytes32 message = merkleAirdrop.getMessage(user, AMOUNT_TO_CLAIM);
         // User sign the message
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, message);
@@ -91,8 +91,8 @@ contract MerkleAdropTest is ZkSyncChainChecker, Test {
     function testUserAlreadyClaimed() public userClaim {
         bytes32 message = merkleAirdrop.getMessage(user, AMOUNT_TO_CLAIM);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(userPrivateKey, message);
-        
-        vm.startPrank(gasPayer);            
+
+        vm.startPrank(gasPayer);
         vm.expectRevert(MerkleAirdrop.MerkleAirdrop__AlreadyClaimed.selector);
         merkleAirdrop.claim(user, AMOUNT_TO_CLAIM, MERKLE_PROOF, v, r, s);
         vm.stopPrank();
